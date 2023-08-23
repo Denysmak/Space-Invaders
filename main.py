@@ -1,4 +1,6 @@
 import pygame
+import random
+
 
 #Initialize the pygame
 pygame.init()
@@ -20,10 +22,12 @@ nova_imagem = pygame.transform.scale(playerImg, (75, 75))
 
 #Enemy
 enemyImg = pygame.image.load('./Assets/alien.png')
-enemyX = 357.5
-enemyY = 480
-enemyX_change = 0
-enemy_imagem = pygame.transform.scale(enemyImg, (75, 75))
+enemyX = random.randint(0, 777)
+enemyY = random.randint(50, 150)
+enemyX_change = 0.3
+enemyY_change = 40
+
+enemy_imagem = pygame.transform.scale(enemyImg, (45, 45))
 
 def player(x,y):
     #blit basically means draw
@@ -54,12 +58,23 @@ while running:
             if event.key == pygame.K_a or event.key == pygame.K_d:
                 print("Keystroke has been released")
                 playerX_change = 0
+    #Player movement
     playerX += playerX_change
 
     if playerX <= -75.0001:
         playerX = 800
     elif playerX >= 800:
         playerX = -75
+
+
+    #enemy movement
+    enemyX += enemyX_change
+    if enemyX <= 0:
+        enemyX_change = 0.3
+        enemyY += enemyY_change
+    elif enemyX >= 755:
+        enemyX_change = -0.3
+        enemyY += enemyY_change
 
     player(playerX, playerY)
     enemy(enemyX, enemyY)

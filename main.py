@@ -56,7 +56,7 @@ def enemy(x,y):
 def fire_bullet(x, y):
     global bullet_state
     bullet_state = "fire"
-    screen.blit(bulletImg, (x+16,y+10))
+    screen.blit(bulletImg, (x+22,y+10))
 
 
 #Game Loop
@@ -78,7 +78,8 @@ while running:
             if event.key == pygame.K_d:
                 playerX_change = 5
             if event.key == pygame.K_SPACE:
-                fire_bullet(playerX, bulletY)
+                bulletX = playerX
+                fire_bullet(bulletX, bulletY)
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_a or event.key == pygame.K_d:
                 print("Keystroke has been released")
@@ -101,8 +102,11 @@ while running:
         enemyX_change = -3.5
         enemyY += enemyY_change
     #bullet movement
+    if bulletY <= 0:
+        bulletY = 480
+        bullet_state = "ready"
     if bullet_state == "fire":
-        fire_bullet(playerX, bulletY)
+        fire_bullet(bulletX, bulletY)
         bulletY -= bulletY_change
     player(playerX, playerY)
     enemy(enemyX, enemyY)

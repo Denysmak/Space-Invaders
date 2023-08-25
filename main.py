@@ -34,6 +34,17 @@ enemyY_change = 40
 
 enemy_imagem = pygame.transform.scale(enemyImg, (45, 45))
 
+#Bullet
+#Ready - you can't see the bullet on the screen
+#Fire - The bullet is currently moving
+
+bulletImg = pygame.image.load('./Assets/paintball.png')
+bulletX = 0
+bulletY = 480
+bulletX_change = 0
+bulletY_change = 10
+bullet_state = "ready"
+
 def player(x,y):
     #blit basically means draw
     screen.blit(nova_imagem, (x, y))
@@ -41,6 +52,11 @@ def player(x,y):
 def enemy(x,y):
     #blit basically means draw
     screen.blit(enemy_imagem, (x, y))
+
+def fire_bullet(x, y):
+    global bullet_state
+    bullet_state = "fire"
+    screen.blit(bulletImg, (x+16,y+10))
 
 
 #Game Loop
@@ -61,6 +77,8 @@ while running:
                 playerX_change = -5
             if event.key == pygame.K_d:
                 playerX_change = 5
+            if event.key == pygame.K_SPACE:
+                fire_bullet(playerX, bulletY)
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_a or event.key == pygame.K_d:
                 print("Keystroke has been released")
@@ -82,7 +100,10 @@ while running:
     elif enemyX >= 755:
         enemyX_change = -3.5
         enemyY += enemyY_change
-
+    #bullet movement
+    if bullet_state == "fire":
+        fire_bullet(playerX, bulletY)
+        bulletY -= bulletY_change
     player(playerX, playerY)
     enemy(enemyX, enemyY)
     pygame.display.update()
